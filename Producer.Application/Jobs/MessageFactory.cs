@@ -1,18 +1,11 @@
 ﻿using Domain;
-using Quartz;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Producer.Application.Jobs
 {
-	public class MessageFactory:IJob
+	public class MessageFactory
 	{
-		public Task Execute(IJobExecutionContext context)
+		public ApiMessage GenerateMessage()
 		{
-
 			var rnd = new Random();
 			var message = new ApiMessage
 			{
@@ -20,7 +13,7 @@ namespace Producer.Application.Jobs
 				Timespan = TimeSpan.FromSeconds(60),
 				Value = rnd.Next(),
 			};
-			return Task.FromResult(message);
+			return message;
 		}
 	}
 }

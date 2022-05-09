@@ -1,4 +1,5 @@
 ﻿using Domain;
+using DotNetCore.CAP;
 
 namespace Producer.Application.IServices
 {

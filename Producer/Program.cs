@@ -35,8 +35,9 @@ services.AddCap(x =>
 services.AddSingleton<IJobFactory, SingletonJobFactory>();
 services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
 
-services.AddSingleton<MessageFactory>();
-services.AddSingleton(new JobSchedule(jobType: typeof(MessageFactory), cronExpression: "* * * ? * *"));
+services.AddSingleton<Job>();
+//services.AddSingleton(new JobSchedule(jobType: typeof(Job), cronExpression: "* * * ? * *"));
+services.AddSingleton(new JobSchedule(jobType: typeof(Job), cronExpression: "0 * * ? * *"));
 services.AddHostedService<QuartzHostedService>();
 #endregion
 
