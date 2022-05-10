@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Producer", "Producer\Producer.csproj", "{B89CAE23-61A4-4BE3-BB5F-3B275D309B51}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Producer", "Producer\Producer.csproj", "{B89CAE23-61A4-4BE3-BB5F-3B275D309B51}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{5CACDE3B-4C98-460D-9FE2-6C21E971957D}"
 EndProject
@@ -13,15 +13,25 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentatio
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructor", "Infrastructor", "{04D270EB-049C-46E8-8C39-CD64E4C99E14}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consumer", "Consumer\Consumer.csproj", "{3191C9C0-B5FB-4E32-A1C9-4DF73DDEBF27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consumer", "Consumer\Consumer.csproj", "{3191C9C0-B5FB-4E32-A1C9-4DF73DDEBF27}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{62C5F008-2419-4765-ADEC-252EAC557832}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{62C5F008-2419-4765-ADEC-252EAC557832}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consumer.IOC", "Consumer.IOC\Consumer.IOC.csproj", "{30E58A4A-9C9D-4190-8578-C3743104F650}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Consumer.IOC", "Consumer.IOC\Consumer.IOC.csproj", "{30E58A4A-9C9D-4190-8578-C3743104F650}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Producer.IOC", "Producer.IOC\Producer.IOC.csproj", "{AF5C8379-5F23-4933-A153-B3D966FC0A42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Producer.IOC", "Producer.IOC\Producer.IOC.csproj", "{AF5C8379-5F23-4933-A153-B3D966FC0A42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Producer.Application", "Producer.Application\Producer.Application.csproj", "{616C4DF7-1CCD-4B12-A1EC-F90E939A7569}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Producer.Application", "Producer.Application\Producer.Application.csproj", "{616C4DF7-1CCD-4B12-A1EC-F90E939A7569}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consomer.Application", "Consomer.Application\Consomer.Application.csproj", "{6911B1A1-C3AC-4FA1-AD99-C531453757E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProducerResourse", "Resourses\ProducerResourse.csproj", "{E82B84CC-01AF-45BA-A930-51DFEBABA4E9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resourses", "Resourses", "{2BED5A7E-00E3-4D85-BC17-56CF692468AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kafka.Consumer", "Kafka.Consumer\Kafka.Consumer.csproj", "{9166CFB2-6CFA-4B59-8EFB-8CEFF5345702}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kafka.Producer", "Kafka.Producer\Kafka.Producer.csproj", "{E51112D9-B6D5-454A-BECA-EE68E02B0A3F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +63,22 @@ Global
 		{616C4DF7-1CCD-4B12-A1EC-F90E939A7569}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{616C4DF7-1CCD-4B12-A1EC-F90E939A7569}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{616C4DF7-1CCD-4B12-A1EC-F90E939A7569}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6911B1A1-C3AC-4FA1-AD99-C531453757E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6911B1A1-C3AC-4FA1-AD99-C531453757E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6911B1A1-C3AC-4FA1-AD99-C531453757E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6911B1A1-C3AC-4FA1-AD99-C531453757E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E82B84CC-01AF-45BA-A930-51DFEBABA4E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E82B84CC-01AF-45BA-A930-51DFEBABA4E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E82B84CC-01AF-45BA-A930-51DFEBABA4E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E82B84CC-01AF-45BA-A930-51DFEBABA4E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9166CFB2-6CFA-4B59-8EFB-8CEFF5345702}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9166CFB2-6CFA-4B59-8EFB-8CEFF5345702}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9166CFB2-6CFA-4B59-8EFB-8CEFF5345702}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9166CFB2-6CFA-4B59-8EFB-8CEFF5345702}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E51112D9-B6D5-454A-BECA-EE68E02B0A3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E51112D9-B6D5-454A-BECA-EE68E02B0A3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E51112D9-B6D5-454A-BECA-EE68E02B0A3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E51112D9-B6D5-454A-BECA-EE68E02B0A3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,6 +90,10 @@ Global
 		{30E58A4A-9C9D-4190-8578-C3743104F650} = {04D270EB-049C-46E8-8C39-CD64E4C99E14}
 		{AF5C8379-5F23-4933-A153-B3D966FC0A42} = {04D270EB-049C-46E8-8C39-CD64E4C99E14}
 		{616C4DF7-1CCD-4B12-A1EC-F90E939A7569} = {3981D9C0-1841-44BD-93C7-7A1BF0D8C6C0}
+		{6911B1A1-C3AC-4FA1-AD99-C531453757E7} = {3981D9C0-1841-44BD-93C7-7A1BF0D8C6C0}
+		{E82B84CC-01AF-45BA-A930-51DFEBABA4E9} = {2BED5A7E-00E3-4D85-BC17-56CF692468AB}
+		{9166CFB2-6CFA-4B59-8EFB-8CEFF5345702} = {04D270EB-049C-46E8-8C39-CD64E4C99E14}
+		{E51112D9-B6D5-454A-BECA-EE68E02B0A3F} = {04D270EB-049C-46E8-8C39-CD64E4C99E14}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1179E3D3-0C61-4452-BB55-D64709A6D6A0}

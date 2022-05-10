@@ -1,71 +1,75 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Hosting;
+﻿using Microsoft.Extensions.Hosting;
 using Quartz;
 using Quartz.Spi;
 
 namespace Producer.Application
 {
-    public class QuartzHostedService:IHostedService
-    {
+	public class QuartzHostedService : IHostedService
+	{
 
-        private readonly ISchedulerFactory _schedulerFactory;
-        private readonly IJobFactory _jobFactory;
-        private readonly IEnumerable<JobSchedule> _jobSchedules;
+		#region Properties
+		private readonly ISchedulerFactory _schedulerFactory;
+		private readonly IJobFactory _jobFactory;
+		private readonly IEnumerable<JobSchedule> _jobSchedules;
+		public IScheduler Scheduler { get; set; }
+		#endregion
 
-        public QuartzHostedService(
-            ISchedulerFactory schedulerFactory,
-            IJobFactory jobFactory,
-            IEnumerable<JobSchedule> jobSchedules)
-        {
-            _schedulerFactory = schedulerFactory;
-            _jobSchedules = jobSchedules;
-            _jobFactory = jobFactory;
-        }
-        public IScheduler Scheduler { get; set; }
+		#region Ctor
+		public QuartzHostedService(
+			ISchedulerFactory schedulerFactory,
+			IJobFactory jobFactory,
+			IEnumerable<JobSchedule> jobSchedules)
+		{
+			_schedulerFactory = schedulerFactory;
+			_jobSchedules = jobSchedules;
+			_jobFactory = jobFactory;
+		}
+		#endregion
 
-        public async Task StartAsync(CancellationToken cancellationToken)
-        {
-            Scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
-            Scheduler.JobFactory = _jobFactory;
 
-            foreach (var jobSchedule in _jobSchedules)
-            {
-                var job = CreateJob(jobSchedule);
-                var trigger = CreateTrigger(jobSchedule);
+		#region IHostedService
+		public async Task StartAsync(CancellationToken cancellationToken)
+		{
+			Scheduler = await _schedulerFactory.GetScheduler(cancellationToken);
+			Scheduler.JobFactory = _jobFactory;
 
-                await Scheduler.ScheduleJob(job, trigger, cancellationToken);
-            }
+			foreach (var jobSchedule in _jobSchedules)
+			{
+				var job = CreateJob(jobSchedule);
+				var trigger = CreateTrigger(jobSchedule);
 
-            await Scheduler.Start(cancellationToken);
-        }
+				await Scheduler.ScheduleJob(job, trigger, cancellationToken);
+			}
 
-        public async Task StopAsync(CancellationToken cancellationToken)
-        {
-            await Scheduler?.Shutdown(cancellationToken);
-        }
+			await Scheduler.Start(cancellationToken);
+		}
 
-        private static IJobDetail CreateJob(JobSchedule schedule)
-        {
-            var jobType = schedule.JobType;
-            return JobBuilder
-                .Create(jobType)
-                .WithIdentity(jobType.FullName)
-                .WithDescription(jobType.Name)
-                .Build();
-        }
+		public async Task StopAsync(CancellationToken cancellationToken)
+		{
+			await Scheduler?.Shutdown(cancellationToken);
+		}
+		#endregion
 
-        private static ITrigger CreateTrigger(JobSchedule schedule)
-        {
-            return TriggerBuilder
-                .Create()
-                .WithIdentity($"{schedule.JobType.FullName}.trigger")
-                .WithCronSchedule(schedule.CronExpression)
-                .WithDescription(schedule.CronExpression)
-                .Build();
-        }
-    }
+		#region HelperMethod
+		private static IJobDetail CreateJob(JobSchedule schedule)
+		{
+			var jobType = schedule.JobType;
+			return JobBuilder
+				.Create(jobType)
+				.WithIdentity(jobType.FullName)
+				.WithDescription(jobType.Name)
+				.Build();
+		}
+
+		private static ITrigger CreateTrigger(JobSchedule schedule)
+		{
+			return TriggerBuilder
+				.Create()
+				.WithIdentity($"{schedule.JobType.FullName}.trigger")
+				.WithCronSchedule(schedule.CronExpression)
+				.WithDescription(schedule.CronExpression)
+				.Build();
+		}
+		#endregion
+	}
 }

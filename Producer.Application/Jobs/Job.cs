@@ -1,26 +1,28 @@
 ﻿using Quartz;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Producer.Application.Jobs
 {
 	public class Job : IJob
 	{
+		#region Properties
 		private IServices.IProducer _producer { get; set; }
+		#endregion
+
+		#region Ctor
 		public Job(IServices.IProducer producer)
 		{
 			_producer = producer;
 		}
+		#endregion
 
+		#region IJob
 		public Task Execute(IJobExecutionContext context)
 		{
-			MessageFactory factory = new();
+			MessageFactory factory = new(100);
 			var message = factory.GenerateMessage();
-			var red = _producer.Publish(message).Result;
+			var res = _producer.Publish(message, factory.range).Result;
 			return Task.CompletedTask;
 		}
+		#endregion
 	}
 }

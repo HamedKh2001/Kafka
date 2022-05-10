@@ -1,15 +1,26 @@
+using Consumer.IOC;
+using Savorboard.CAP.InMemoryMessageQueue;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+var services = builder.Services;
+#region Services
+services.AddControllers();
+services.AddEndpointsApiExplorer();
+services.AddSwaggerGen();
+DependencyContainer.RegisterServices(services);
+#region CAP
+services.AddCap(x =>
+{
+	x.UseInMemoryMessageQueue();
+	x.UseInMemoryStorage();
+	x.UseKafka("localhost:9092");
+});
+#endregion
+#endregion
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
 	app.UseSwagger();

@@ -4,16 +4,32 @@ namespace Producer.Application.Jobs
 {
 	public class MessageFactory
 	{
-		public ApiMessage GenerateMessage()
+		#region Properties
+		public int range { get; }
+		#endregion
+		#region Ctor
+		public MessageFactory(int rage)
 		{
+			this.range = rage;
+		}
+		#endregion
+
+		public List<ApiMessage> GenerateMessage()
+		{
+			int counter = 1;
+			List<ApiMessage> messageList = new();
 			var rnd = new Random();
-			var message = new ApiMessage
+			while (counter <= this.range)
 			{
-				Id = rnd.Next(1, 500),
-				Timespan = TimeSpan.FromSeconds(60),
-				Value = rnd.Next(),
-			};
-			return message;
+				messageList.Add(new ApiMessage
+				{
+					Id = rnd.Next(1, 100),
+					DateTime = DateTime.Now,
+					Value = counter
+				});
+				counter++;
+			}
+			return messageList;
 		}
 	}
 }

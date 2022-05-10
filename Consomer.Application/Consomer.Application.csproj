@@ -10,14 +10,11 @@
     <PackageReference Include="Confluent.Kafka" Version="1.8.2" />
     <PackageReference Include="DotNetCore.CAP.InMemoryStorage" Version="6.0.1" />
     <PackageReference Include="DotNetCore.CAP.Kafka" Version="6.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="6.0.0" />
-    <PackageReference Include="Quartz" Version="3.4.0" />
     <PackageReference Include="Savorboard.CAP.InMemoryMessageQueue" Version="6.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Domain\Domain.csproj" />
-    <ProjectReference Include="..\Resourses\ProducerResourse.csproj" />
   </ItemGroup>
 
 </Project>

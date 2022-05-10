@@ -1,9 +1,4 @@
-using Producer.Application;
-using Producer.Application.IServices;
-using Producer.Application.Jobs;
-using Quartz;
-using Quartz.Impl;
-using Quartz.Spi;
+using Producer.IOC;
 using Savorboard.CAP.InMemoryMessageQueue;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,35 +7,16 @@ var services = builder.Services;
 
 #region Services
 services.AddControllers();
-services.AddSingleton<IProducer, Producer.Application.Services.Producer>();
 #region CAP
-services.AddCap(x =>
+builder.Services.AddCap(x =>
 {
 	x.UseInMemoryMessageQueue();
 	x.UseInMemoryStorage();
-	x.UseKafka("localhost:9092");
-	//x.UseKafka(opt =>
-	//{
-	//	opt.Servers = "";
-	//	opt.CustomHeaders = kafkaResult => new List<KeyValuePair<string, string>>
-	//{
-	//	new KeyValuePair<string, string>("my.kafka.offset", kafkaResult.Offset.ToString()),
-	//	new KeyValuePair<string, string>("my.kafka.partition", kafkaResult.Partition.ToString())
-	//};
-	//});
+	//todo: add to config
+	x.UseKafka(builder.Configuration.GetSection("KafkaConfigs")["bootstrapserver"]);
 });
 #endregion
-
-#region Quartz
-services.AddSingleton<IJobFactory, SingletonJobFactory>();
-services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
-
-services.AddSingleton<Job>();
-//services.AddSingleton(new JobSchedule(jobType: typeof(Job), cronExpression: "* * * ? * *"));
-services.AddSingleton(new JobSchedule(jobType: typeof(Job), cronExpression: "0 * * ? * *"));
-services.AddHostedService<QuartzHostedService>();
-#endregion
-
+DependencyContainer.RegisterServices(services);
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 #endregion
@@ -56,7 +32,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthorization();
 
 app.MapControllers();

@@ -11,11 +11,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\Producer.Application\Producer.Application.csproj" />
+    <ProjectReference Include="..\Producer.IOC\Producer.IOC.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Producer.Application\Producer.Application.csproj" />
+    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>
