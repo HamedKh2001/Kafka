@@ -22,9 +22,10 @@ namespace Producer.IOC
 			services.AddSingleton<IJobFactory, SingletonJobFactory>();
 			services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
 
-			services.AddSingleton<Job>();
+			services.AddSingleton<ProducerJob>();
 			//services.AddSingleton(new JobSchedule(jobType: typeof(Job), cronExpression: "* * * ? * *"));
-			services.AddSingleton(new JobSchedule(jobType: typeof(Job), cronExpression: "0 * * ? * *"));
+			services.AddSingleton(new JobSchedule(jobType: typeof(ProducerJob), cronExpression: "0 * * ? * *"));
+			//services.AddSingleton(new JobSchedule(jobType: typeof(ProducerJob), cronExpression: "0 */2 * ? * *"));
 			services.AddHostedService<QuartzHostedService>();
 			#endregion
 		}

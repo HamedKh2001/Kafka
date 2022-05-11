@@ -1,16 +1,18 @@
 ﻿using Domain;
+using Microsoft.Extensions.Configuration;
 
 namespace Producer.Application.Jobs
 {
 	public class MessageFactory
 	{
 		#region Properties
-		public int range { get; }
+		public int Range { get; }
 		#endregion
+		
 		#region Ctor
-		public MessageFactory(int rage)
+		public MessageFactory(int range)
 		{
-			this.range = rage;
+			this.Range = range;
 		}
 		#endregion
 
@@ -19,13 +21,13 @@ namespace Producer.Application.Jobs
 			int counter = 1;
 			List<ApiMessage> messageList = new();
 			var rnd = new Random();
-			while (counter <= this.range)
+			while (counter <= this.Range)
 			{
 				messageList.Add(new ApiMessage
 				{
-					Id = rnd.Next(1, 100),
+					Id = counter,
 					DateTime = DateTime.Now,
-					Value = counter
+					Value = rnd.Next(1,100000000),
 				});
 				counter++;
 			}

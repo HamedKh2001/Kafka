@@ -1,9 +1,10 @@
 ﻿using Domain;
+using DotNetCore.CAP;
 
 namespace Consomer.Application.IService
 {
 	public interface ISubscriberService
 	{
-		void CheckReceivedMessage(List<ApiMessage> messages);
+		Task CheckReceivedMessage(List<ApiMessage> messages, [FromCap] CapHeader header);
 	}
 }

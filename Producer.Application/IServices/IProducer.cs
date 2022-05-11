@@ -5,7 +5,6 @@ namespace Producer.Application.IServices
 {
 	public interface IProducer
 	{
-		public string topic { get; }
-		Task<bool> Publish(List<ApiMessage> apiMessage, int range);
+		Task<bool> Publishasync(List<ApiMessage> apiMessage, int range);
 	}
 }

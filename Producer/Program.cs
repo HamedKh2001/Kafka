@@ -13,7 +13,7 @@ builder.Services.AddCap(x =>
 	x.UseInMemoryMessageQueue();
 	x.UseInMemoryStorage();
 	//todo: add to config
-	x.UseKafka(builder.Configuration.GetSection("KafkaConfigs")["bootstrapserver"]);
+	x.UseKafka(builder.Configuration.GetSection("KafkaConfigs")["Bootstrapserver"]);
 });
 #endregion
 DependencyContainer.RegisterServices(services);
