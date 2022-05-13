@@ -5,6 +5,6 @@ namespace Consomer.Application.IService
 {
 	public interface ISubscriberService
 	{
-		Task CheckReceivedMessage(List<ApiMessage> messages, [FromCap] CapHeader header);
+		Task CheckReceivedMessageasync(List<ApiMessage> messages, [FromCap] CapHeader header);
 	}
 }

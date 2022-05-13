@@ -19,7 +19,7 @@ namespace Producer.Application.Jobs
 		public ProducerJob(IServices.IProducer producer, IConfiguration configuration)
 		{
 			_producer = producer;
-			_configuration = configuration; 
+			_configuration = configuration;
 			Range = Convert.ToInt32(_configuration.GetSection("ProducerConfig")["Range"]);
 			CountPerStep = Convert.ToInt32(_configuration.GetSection("ProducerConfig")["CountPerStep"]);
 		}
@@ -30,10 +30,15 @@ namespace Producer.Application.Jobs
 		{
 			MessageFactory factory = new(Range);
 			var message = factory.GenerateMessage();
+			var guid = Guid.NewGuid();
+			var newguid = guid.ToString().Split('-')[0];
 			for (int i = 0; i < message.Count / CountPerStep; i++)
 			{
+				var header = new Dictionary<string, string?>();
+				header.Add("range", factory.Range.ToString());
+				header.Add("identifier", newguid);
 				var publishableMessage = message.Skip(i * CountPerStep).Take(CountPerStep);
-				var res = _producer.Publishasync(publishableMessage.ToList(), factory.Range).Result;
+				var res = _producer.Publishasync(publishableMessage.ToList(), header).Result;
 				//Task.Delay(400);
 			}
 			return Task.CompletedTask;

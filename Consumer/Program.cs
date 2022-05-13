@@ -1,5 +1,4 @@
 using Consumer.IOC;
-using Savorboard.CAP.InMemoryMessageQueue;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,15 +7,7 @@ var services = builder.Services;
 services.AddControllers();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
-DependencyContainer.RegisterServices(services);
-#region CAP
-services.AddCap(x =>
-{
-	x.UseInMemoryMessageQueue();
-	x.UseInMemoryStorage();
-	x.UseKafka("localhost:9092");
-});
-#endregion
+DependencyContainer.RegisterServices(services, builder.Configuration);
 #endregion
 
 var app = builder.Build();

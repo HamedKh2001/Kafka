@@ -1,6 +1,5 @@
 ﻿using Domain;
 using DotNetCore.CAP;
-using Microsoft.Extensions.Configuration;
 using Producer.Application.IServices;
 using System.Diagnostics;
 
@@ -20,12 +19,10 @@ namespace Kafka.Producer.Services
 		#endregion
 
 		#region IProducer
-		public async Task<bool> Publishasync(List<ApiMessage> apiMessage, int range)
+		public async Task<bool> Publishasync(List<ApiMessage> apiMessage, Dictionary<string, string?>  header)
 		{
 			try
 			{
-				var header = new Dictionary<string, string?>();
-				header.Add("range", range.ToString());
 				await _capPublisher.PublishAsync(nameof(ApiMessage), contentObj: apiMessage, headers: header);
 				return await Task.FromResult(true);
 			}
