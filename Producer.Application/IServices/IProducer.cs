@@ -1,10 +1,13 @@
-﻿using Domain;
-using DotNetCore.CAP;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Producer.Application.IServices
 {
 	public interface IProducer
 	{
-		Task<bool> Publishasync(List<ApiMessage> apiMessage, Dictionary<string, string?> header);
+		Task Publisherasync();
 	}
 }

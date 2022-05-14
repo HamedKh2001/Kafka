@@ -1,11 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Producer.Application;
 using Producer.Application.IServices;
-using Producer.Application.Jobs;
-using Quartz;
-using Quartz.Impl;
-using Quartz.Spi;
 using Savorboard.CAP.InMemoryMessageQueue;
 
 namespace Producer.IOC
@@ -14,11 +9,9 @@ namespace Producer.IOC
 	{
 		public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
 		{
-			//Application
 			services.AddSingleton<IProducer, Kafka.Producer.Services.Producer>();
-
-			//Infra
-
+			//services.AddTransient<Microsoft.AspNetCore.Http.IHttpContextAccessor,
+			//	Microsoft.AspNetCore.Http.HttpContextAccessor>();
 
 			#region CAP
 			services.AddCap(x =>
@@ -30,15 +23,19 @@ namespace Producer.IOC
 			});
 			#endregion
 
-			#region Quartz
-			services.AddSingleton<IJobFactory, SingletonJobFactory>();
-			services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
-
-			services.AddSingleton<ProducerJob>();
-			services.AddSingleton(new JobSchedule(jobType: typeof(ProducerJob),
-				cronExpression: configuration.GetSection("QuartzConfig")["CronExpression"]));
-			services.AddHostedService<QuartzHostedService>();
+			#region NLog
+			//services.AddTransient(typeof(NLogging.ILogger<>),typeof(NLogging.NLogAdapter<>));
 			#endregion
+
+			//#region Quartz
+			//services.AddSingleton<IJobFactory, SingletonJobFactory>();
+			//services.AddSingleton<ISchedulerFactory, StdSchedulerFactory>();
+
+			//services.AddSingleton<ProducerJob>();
+			//services.AddSingleton(new JobSchedule(jobType: typeof(ProducerJob),
+			//	cronExpression: configuration.GetSection("QuartzConfig")["CronExpression"]));
+			//services.AddHostedService<QuartzHostedService>();
+			//#endregion
 		}
 	}
 }

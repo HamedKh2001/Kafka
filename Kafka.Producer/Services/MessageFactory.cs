@@ -1,14 +1,13 @@
 ﻿using Domain;
-using Microsoft.Extensions.Configuration;
 
-namespace Producer.Application.Jobs
+namespace Kafka.Producer.Services
 {
 	public class MessageFactory
 	{
 		#region Properties
 		public int Range { get; }
 		#endregion
-		
+
 		#region Ctor
 		public MessageFactory(int range)
 		{
@@ -27,7 +26,7 @@ namespace Producer.Application.Jobs
 				{
 					Id = counter,
 					DateTime = DateTime.Now,
-					Value = rnd.Next(1,100000000),
+					Value = rnd.Next(1, 100000000),
 				});
 				counter++;
 			}

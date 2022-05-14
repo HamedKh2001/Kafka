@@ -2,21 +2,20 @@
 using Kafka.Consumer.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Producer.Application;
-using Quartz;
-using Quartz.Impl;
-using Quartz.Spi;
 using Savorboard.CAP.InMemoryMessageQueue;
 
 namespace Consumer.IOC
 {
 	public class DependencyContainer
 	{
-		public static void RegisterServices(IServiceCollection services,IConfiguration configuration)
+		public static void RegisterServices(IServiceCollection services, IConfiguration configuration)
 		{
-			//Infra
-			services.AddSingleton<ISubscriberService, SubscriberService>();
+			services.AddTransient<ISubscriberService, SubscriberService>();
 
+
+			#region NLog
+			//services.AddTransient(serviceType: typeof(NLogging.ILogger<>),implementationType: typeof(NLogging.NLogAdapter<>));
+			#endregion
 
 			#region CAP
 			services.AddCap(x =>

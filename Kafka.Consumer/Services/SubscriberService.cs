@@ -4,71 +4,116 @@ using DotNetCore.CAP;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
-using System.Diagnostics;
 
 namespace Kafka.Consumer.Services
 {
-	public class SubscriberService : ISubscriberService, ICapSubscribe
+	public class SubscriberService : ISubscriberService
 	{
 		#region Properties
 		private ConcurrentDictionary<int, bool> RecievedMessage;
-		private string? TempIdentifier;
-		private int Delay;
+		private readonly int IntervalTime;
+		private int InpuRate;
+		private double MissRate;
+		private readonly int RecieveRange;
+
+		System.Timers.Timer TimerReportStatistics;
+
+		System.Timers.Timer CalculateReportStatistics;
+
 		#endregion
 
-		#region DI
+		#region Dependencies
 		public readonly IConfiguration _configuration;
-		public readonly ILogger _logger;
+		protected ILogger<SubscriberService> Logger { get; }
 		#endregion
 
 		#region Ctor
-		public SubscriberService(IConfiguration configuration,ILogger<SubscriberService> logger)
+		public SubscriberService(IConfiguration configuration, ILogger<SubscriberService> logger)
 		{
 			_configuration = configuration;
 			RecievedMessage = new ConcurrentDictionary<int, bool>();
-			Delay = Convert.ToInt32(_configuration.GetSection("SubscribeConfig")["Delay"]);
-			_logger = logger;
+			IntervalTime = Convert.ToInt32(_configuration.GetSection("SubscribeConfig")["IntervalTime"]);
+			RecieveRange = Convert.ToInt32(_configuration.GetSection("SubscribeConfig")["RecieveRange"]);
+			InpuRate = 0;
+			Logger = logger;
+
+			InitialRecievedMessages(RecieveRange);
+
+			TimerReportStatistics = new System.Timers.Timer();
+			TimerReportStatistics.Interval = IntervalTime;
+			TimerReportStatistics.Elapsed += (a, b) =>
+			{
+				string report = CreateStatiustics();
+				ResetStatistics();
+				Logger.LogInformation(report);
+			};
+			TimerReportStatistics.Start();
+
+
+
+			CalculateReportStatistics = new System.Timers.Timer();
+			CalculateReportStatistics.Interval = 1000;
+			CalculateReportStatistics.Elapsed += (a, b) =>
+			{
+				CalculateMissRate();
+			};
+			CalculateReportStatistics.Start();
 		}
 		#endregion
 
-
+		#region Helper Methods
 		[CapSubscribe(nameof(ApiMessage))]
-		public Task CapListener(List<ApiMessage> messages, [FromCap] CapHeader header)
+		private Task CapListener(List<ApiMessage> messages, [FromCap] CapHeader header)
 		{
-			using (var cts = new CancellationTokenSource(1000))
-			{
-				//Task.Factory.StartNew(async () =>await CheckReceivedMessage(messages, header), cts.Token);
-				Task.Run(async () => await CheckReceivedMessageasync(messages, header), cts.Token);
-			}
-			var successRate = (double)RecievedMessage.Count() / Convert.ToDouble(header.GetValueOrDefault("range")) * 100;
-			Debug.WriteLine($"success rate = {successRate}%");
-			_logger.LogInformation($"success rate = {successRate}%");
+			InpuRate += messages.Count;
+
+			Task.Run(async () => await CheckReceivedMessageasync(messages, header)).Wait();
 			return Task.CompletedTask;
 		}
+
+		private Task InsertToLocalCache(List<ApiMessage> messages)
+		{
+			//toido: insert to localashe
+			Parallel.ForEach(messages, new ParallelOptions() { MaxDegreeOfParallelism = 10 }, message =>
+			  {
+				  RecievedMessage.TryUpdate(message.Id, true, false);
+			  });
+			return Task.CompletedTask;
+		}
+		private void CalculateMissRate()
+		{
+			//todo: calculate miss rate
+			double missNumbers = RecievedMessage.Where(m => m.Value == false).Count();
+			MissRate = (missNumbers / RecieveRange) * 100;
+		}
+
+
+		private void ResetStatistics()
+		{
+			InpuRate = 0;
+		}
+
+		private string CreateStatiustics()
+		{
+			return $"InputRate: {InpuRate} MissRate: {MissRate}";
+		}
+
+		/// <summary>
+		/// Will Fill the Dictionary With specific Count And False Value
+		/// </summary>
+		/// <param name="count">Gets Total number of messages which Will Recieve</param>
+		private void InitialRecievedMessages(int count)
+		{
+			RecievedMessage = new ConcurrentDictionary<int, bool>();
+			for (int i = 1; i <= count; i++)
+				RecievedMessage.TryAdd(i, false);
+		}
+		#endregion
 
 		#region ISubscriberService
 		public Task CheckReceivedMessageasync(List<ApiMessage> messages, [FromCap] CapHeader header)
 		{
-			if (header.GetValueOrDefault("identifier") != TempIdentifier && TempIdentifier != null)
-				RecievedMessage = new ConcurrentDictionary<int, bool>();
-			TempIdentifier = header.GetValueOrDefault("identifier");
-			var range = Convert.ToInt32(header.GetValueOrDefault("range"));
-			Parallel.ForEach(messages, message =>
-			{
-				new ParallelOptions
-				{
-					MaxDegreeOfParallelism = Convert.ToInt32(Math.Ceiling((Environment.ProcessorCount * 0.75) * 2.0))
-				};
-				RecievedMessage.TryAdd(message.Id, true);
-				//for (int i = RecievedMessage.Count + 1; i <= range; i++)
-				//{
-				//RecievedMessage.TryAdd(i, true);
-				//if (messages.Any(m => m.Id == i))
-				//	RecievedMessage.TryAdd(i, true);
-				//else if (RecievedMessage.Any(r => r.Key == i & r.Value == false))
-				//	RecievedMessage.TryAdd(i, false);
-				//}
-			});
+			InsertToLocalCache(messages);
 			return Task.CompletedTask;
 		}
 		#endregion
