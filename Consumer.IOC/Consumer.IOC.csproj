@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\MobileNJ-Sourse-Project\MobileNJ-master\Dtx.Logging\Nlog.Logging.csproj" />
     <ProjectReference Include="..\Consomer.Application\Consomer.Application.csproj" />
     <ProjectReference Include="..\Kafka.Consumer\Kafka.Consumer.csproj" />
   </ItemGroup>

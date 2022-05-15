@@ -11,8 +11,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\MobileNJ-Sourse-Project\MobileNJ-master\Dtx.Logging\Nlog.Logging.csproj" />
     <ProjectReference Include="..\Producer.Application\Producer.Application.csproj" />
     <ProjectReference Include="..\Producer.IOC\Producer.IOC.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="nlog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

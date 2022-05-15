@@ -35,7 +35,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kafka.Producer", "Kafka.Pro
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Logger", "Logger", "{085F2A3B-656C-41DE-8D3F-C77236D17023}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Log4net", "Log4net\Log4net.csproj", "{AF1082D6-D298-4620-BF83-2D6F1D18AD83}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Log4net", "Log4net\Log4net.csproj", "{AF1082D6-D298-4620-BF83-2D6F1D18AD83}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Doc", "Doc", "{642BDA38-BA6E-4224-BBD7-A65C791B21CB}"
+	ProjectSection(SolutionItems) = preProject
+		C:\Users\Favre\Desktop\Kafka.txt = C:\Users\Favre\Desktop\Kafka.txt
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nlog.Logging", "..\..\MobileNJ-Sourse-Project\MobileNJ-master\Dtx.Logging\Nlog.Logging.csproj", "{187C5257-F993-4F95-AD81-A3274897A660}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +94,10 @@ Global
 		{AF1082D6-D298-4620-BF83-2D6F1D18AD83}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AF1082D6-D298-4620-BF83-2D6F1D18AD83}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AF1082D6-D298-4620-BF83-2D6F1D18AD83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{187C5257-F993-4F95-AD81-A3274897A660}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{187C5257-F993-4F95-AD81-A3274897A660}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{187C5257-F993-4F95-AD81-A3274897A660}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{187C5257-F993-4F95-AD81-A3274897A660}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -103,6 +114,7 @@ Global
 		{9166CFB2-6CFA-4B59-8EFB-8CEFF5345702} = {04D270EB-049C-46E8-8C39-CD64E4C99E14}
 		{E51112D9-B6D5-454A-BECA-EE68E02B0A3F} = {04D270EB-049C-46E8-8C39-CD64E4C99E14}
 		{AF1082D6-D298-4620-BF83-2D6F1D18AD83} = {085F2A3B-656C-41DE-8D3F-C77236D17023}
+		{187C5257-F993-4F95-AD81-A3274897A660} = {085F2A3B-656C-41DE-8D3F-C77236D17023}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1179E3D3-0C61-4452-BB55-D64709A6D6A0}

@@ -45,7 +45,7 @@ namespace Kafka.Consumer.Services
 			{
 				string report = CreateStatiustics();
 				ResetStatistics();
-				Logger.LogInformation(report);
+				Logger.LogWarning(report);
 			};
 			TimerReportStatistics.Start();
 
@@ -80,13 +80,12 @@ namespace Kafka.Consumer.Services
 			  });
 			return Task.CompletedTask;
 		}
+
 		private void CalculateMissRate()
 		{
-			//todo: calculate miss rate
 			double missNumbers = RecievedMessage.Where(m => m.Value == false).Count();
 			MissRate = (missNumbers / RecieveRange) * 100;
 		}
-
 
 		private void ResetStatistics()
 		{
@@ -95,7 +94,7 @@ namespace Kafka.Consumer.Services
 
 		private string CreateStatiustics()
 		{
-			return $"InputRate: {InpuRate} MissRate: {MissRate}";
+			return $"{InpuRate}\t{MissRate}";
 		}
 
 		/// <summary>

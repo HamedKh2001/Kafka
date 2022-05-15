@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\MobileNJ-Sourse-Project\MobileNJ-master\Dtx.Logging\Nlog.Logging.csproj" />
     <ProjectReference Include="..\Producer.Application\Producer.Application.csproj" />
   </ItemGroup>
 
