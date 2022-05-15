@@ -9,10 +9,10 @@ namespace Kafka.Producer.Services
 	public class Producer : IProducer
 	{
 		#region Properties
-		private int CountPerStep;
+		private int OutputRate;
 		private int MaxRange { get; }
-		private int SentMessagesFromStart;
 		private int SentMessagesPerPublish;
+		private int SumOfPublishedMessages;
 		private int IntervalTime;
 		private readonly ICapPublisher _capPublisher;
 
@@ -33,12 +33,12 @@ namespace Kafka.Producer.Services
 
 			//Set Configs
 			MaxRange = Convert.ToInt32(_configuration.GetSection("ProducerConfig")["MaxRange"]);
-			CountPerStep = Convert.ToInt32(_configuration.GetSection("ProducerConfig")["CountPerStep"]);
+			OutputRate = Convert.ToInt32(_configuration.GetSection("ProducerConfig")["OutputRate"]);
 			IntervalTime = Convert.ToInt32(_configuration.GetSection("ProducerConfig")["ReportInterval"]);
 
 			_capPublisher = capPublisher;
 			Logger = logger;
-			SentMessagesFromStart = 0;
+			SumOfPublishedMessages = 0;
 
 
 			TimerReportStatistics = new System.Timers.Timer();
@@ -54,33 +54,34 @@ namespace Kafka.Producer.Services
 		#endregion
 
 		#region IJob
-		public async Task Publisherasync()
+		public async Task<int> Publisherasync()
 		{
 			//Statics
 			MessageFactory factory = new(MaxRange);
-			var message = factory.GenerateMessage();
+			var messageList = factory.GenerateMessage();
 			int delayInMilliSec = 20;
-			int steps = message.Count / CountPerStep;
+			int numberOfStepsinEachSecond = 1000 / delayInMilliSec;
+			int sizeOfmessageListToSend = OutputRate / numberOfStepsinEachSecond;
 
-			for (int i = 0; i < steps; i++)
+			while (messageList.Count >= 0)
 			{
-				var header = new Dictionary<string, string?>();
-				header.Add("range", factory.Range.ToString());
-				var publishableMessage = message.Skip(i * CountPerStep).Take(CountPerStep);
-				await _capPublisher.PublishAsync(nameof(ApiMessage), contentObj: publishableMessage, headers: header);
-				SentMessagesPerPublish = publishableMessage.Count();
-				SentMessagesFromStart += publishableMessage.Count();
+				var messagesToSend = messageList.Take(numberOfStepsinEachSecond);
+				messageList.RemoveRange(0, numberOfStepsinEachSecond);
+				await _capPublisher.PublishAsync(nameof(ApiMessage), contentObj: messagesToSend);
+				SentMessagesPerPublish = messagesToSend.Count();
+				SumOfPublishedMessages += messagesToSend.Count();
 				Logger.LogWarning(CreateStatictics());
-				Task.Delay(delayInMilliSec).Wait();
+				await Task.Delay(delayInMilliSec);
 			}
+			return SumOfPublishedMessages;
 		}
 		#endregion
 
 		#region Helper Methods
 		private string CreateStatictics()
 		{
-			var successfullySent = (double)SentMessagesPerPublish / SentMessagesFromStart * 100;
-			return ($"{SentMessagesFromStart}\t{successfullySent}");
+			var successfullySent = (double)SentMessagesPerPublish / SumOfPublishedMessages * 100;
+			return ($"{SumOfPublishedMessages}\t{successfullySent}");
 		}
 		private void ResetStatistics()
 		{

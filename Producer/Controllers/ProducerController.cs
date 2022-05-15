@@ -22,8 +22,8 @@ namespace Producer.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Send()
 		{
-			await _producer.Publisherasync();
-			return await Task.FromResult(Ok());
+			var res = await _producer.Publisherasync();
+			return await Task.FromResult(Ok(res));
 		}
 		#endregion
 	}

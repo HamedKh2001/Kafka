@@ -75,9 +75,9 @@ namespace Kafka.Consumer.Services
 		{
 			//toido: insert to localashe
 			Parallel.ForEach(messages, new ParallelOptions() { MaxDegreeOfParallelism = 10 }, message =>
-			  {
-				  RecievedMessage.TryUpdate(message.Id, true, false);
-			  });
+			{
+			  RecievedMessage.TryUpdate(message.Id, true, false);
+			});
 			return Task.CompletedTask;
 		}
 

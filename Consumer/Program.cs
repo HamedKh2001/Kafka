@@ -3,7 +3,7 @@ using NLog;
 using NLog.Web;
 
 var builder = WebApplication.CreateBuilder(args);
-var logger = NLog.LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
+var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Warn("InputRate\tMissRate");
 //builder.Logging.AddLog4Net("log4net.config");
 builder.Host.UseNLog();

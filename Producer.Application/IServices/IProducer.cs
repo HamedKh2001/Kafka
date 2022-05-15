@@ -8,6 +8,6 @@ namespace Producer.Application.IServices
 {
 	public interface IProducer
 	{
-		Task Publisherasync();
+		Task<int> Publisherasync();
 	}
 }
